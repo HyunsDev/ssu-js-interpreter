@@ -4,9 +4,33 @@ import { EvaluationUnit } from "../types";
 import { FunctionValue, JavascriptValue } from "../value";
 import { ExpressionNode, StatementNode } from "./BaseNode";
 import { IdentifierNode } from "./ExpressionNode";
+import { UndefinedLiteralNode } from "./LiteralNode";
 
 export abstract class DefinitionNode extends ExpressionNode {
     abstract identifier: IdentifierNode;
+}
+
+export class VariableDefinitionNode extends DefinitionNode {
+    identifier: IdentifierNode;
+    expression: ExpressionNode;
+
+    constructor(
+        identifier: IdentifierNode,
+        expression: ExpressionNode = new UndefinedLiteralNode()
+    ) {
+        super();
+        this.identifier = identifier;
+        this.expression = expression;
+    }
+
+    @NodeTracer()
+    *evaluate(ctx: EvaluationContext): EvaluationUnit {
+        const value = yield* this.expression.evaluate(ctx.getSubContext());
+        ctx.executionContext.environment.environmentRecord[
+            this.identifier.identifier
+        ] = value;
+        return value;
+    }
 }
 
 export class JavascriptDefinitionNode extends DefinitionNode {

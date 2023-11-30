@@ -1,6 +1,8 @@
 import { FunctionDefinitionNode, JavascriptDefinitionNode } from "../node";
 
-export abstract class BaseValue {}
+export abstract class BaseValue {
+    abstract value: any;
+}
 
 export class StringValue extends BaseValue {
     value: string;
@@ -43,6 +45,8 @@ export class UndefinedValue extends BaseValue {
 }
 
 export class FunctionValue extends BaseValue {
+    value: undefined;
+
     identifier: string;
     definition: FunctionDefinitionNode;
     constructor(identifier: string, definition: FunctionDefinitionNode) {
@@ -53,6 +57,8 @@ export class FunctionValue extends BaseValue {
 }
 
 export class JavascriptValue extends BaseValue {
+    value: undefined;
+
     identifier: string;
     definition: JavascriptDefinitionNode;
     constructor(identifier: string, definition: JavascriptDefinitionNode) {

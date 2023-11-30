@@ -50,4 +50,24 @@ export class WhileStatementNode extends StatementNode {
         super(nodes);
         this.condition = condition;
     }
+
+    @NodeTracer()
+    *execute(context: EvaluationContext): EvaluationUnit {
+        while (true) {
+            let condition = yield* this.condition.evaluate(
+                context.getSubContext()
+            );
+            if (!(condition instanceof BooleanValue)) {
+                throw new Error(
+                    "while 조건문은 조건은 boolean 타입이어야 합니다."
+                );
+            }
+            if (!condition.value) {
+                break;
+            }
+
+            yield* context.executionContext.execute(this.nodes);
+        }
+        return new UndefinedValue();
+    }
 }

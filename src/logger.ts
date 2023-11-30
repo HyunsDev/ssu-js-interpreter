@@ -1,6 +1,8 @@
 import chalk from "chalk";
 import { FunctionCallNode } from "./node";
 
+const SHOW_NODE = true;
+
 export const logger = {
     output: (from: string, value: any) => {
         console.log(`${chalk.bgBlue(` ${from} `)} ${value}`);
@@ -46,6 +48,8 @@ export class Tracer {
 
     pushNode(name: string, deps: number, message = ""): void {
         this.stack[this.stack.length - 1].deps = deps;
+
+        if (!SHOW_NODE) return;
         console.log(
             `${"  ".repeat(this.getPosition())}${chalk.gray(
                 `${name}`

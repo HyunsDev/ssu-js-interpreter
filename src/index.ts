@@ -1,4 +1,4 @@
-import { program } from "./example/example3.ssu";
+import { program } from "./example/example5.ssu";
 import { Interpreter } from "./interpreter";
 
 const interpreter = new Interpreter();

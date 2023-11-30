@@ -1,23 +1,35 @@
-import { TrueLiteral } from "typescript";
 import {
+    AndOperatorNode,
     BaseNode,
     BooleanLiteralNode,
+    EqualityOperatorNode,
     ExpressionNode,
     FunctionCallNode,
     FunctionDefinitionNode,
     IdentifierNode,
     IfStatementNode,
+    NotOperatorNode,
     NumberLiteralNode,
+    OrOperatorNode,
     PlusOperatorNode,
     ProgramNode,
     ReturnNode,
     StatementNode,
     StringLiteralNode,
+    VariableDefinitionNode,
+    WhileStatementNode,
 } from "./node";
-import { TrueValue } from "./value";
+
+const arg = (arg: ExpressionNode | string): ExpressionNode => {
+    return typeof arg === "string" ? new IdentifierNode(arg) : arg;
+};
 
 const Program = (nodes: (StatementNode | ExpressionNode)[]): ProgramNode => {
     return new ProgramNode(new StatementNode(nodes));
+};
+
+const Identifier = (identifier: string): IdentifierNode => {
+    return new IdentifierNode(identifier);
 };
 
 const FunctionDefinition = (
@@ -34,9 +46,12 @@ const FunctionDefinition = (
 
 const FunctionCall = (
     identifier: string,
-    args: ExpressionNode[]
+    args: (ExpressionNode | string)[]
 ): FunctionCallNode => {
-    return new FunctionCallNode(new IdentifierNode(identifier), args);
+    return new FunctionCallNode(
+        new IdentifierNode(identifier),
+        args.map((e) => arg(e))
+    );
 };
 
 const Return = (expression: ExpressionNode): ExpressionNode => {
@@ -63,22 +78,71 @@ const Plus = (
     left: ExpressionNode | string,
     right: ExpressionNode | string
 ): PlusOperatorNode => {
-    const leftNode = typeof left === "string" ? new IdentifierNode(left) : left;
-    const rightNode =
-        typeof right === "string" ? new IdentifierNode(right) : right;
-
-    return new PlusOperatorNode(leftNode, rightNode);
+    return new PlusOperatorNode(arg(left), arg(right));
 };
 
 const If = (
-    condition: ExpressionNode,
+    condition: ExpressionNode | string,
     then: BaseNode[],
     otherwise?: BaseNode[]
 ): IfStatementNode => {
-    return new IfStatementNode(condition, then, otherwise);
+    return new IfStatementNode(arg(condition), then, otherwise);
+};
+
+const While = (
+    condition: ExpressionNode | string,
+    body: BaseNode[]
+): WhileStatementNode => {
+    return new WhileStatementNode(arg(condition), body);
+};
+
+const Var = (
+    identifier: string,
+    expression?: ExpressionNode
+): VariableDefinitionNode => {
+    return new VariableDefinitionNode(
+        new IdentifierNode(identifier),
+        expression
+    );
+};
+
+const Assign = (
+    identifier: string,
+    expression: ExpressionNode | string
+): VariableDefinitionNode => {
+    return new VariableDefinitionNode(
+        new IdentifierNode(identifier),
+        arg(expression)
+    );
+};
+
+const Equal = (
+    left: ExpressionNode | string,
+    right: ExpressionNode | string
+): EqualityOperatorNode => {
+    return new EqualityOperatorNode(arg(left), arg(right));
+};
+
+const And = (
+    left: ExpressionNode | string,
+    right: ExpressionNode | string
+): AndOperatorNode => {
+    return new AndOperatorNode(arg(left), arg(right));
+};
+
+const Or = (
+    left: ExpressionNode | string,
+    right: ExpressionNode | string
+): OrOperatorNode => {
+    return new OrOperatorNode(arg(left), arg(right));
+};
+
+const Not = (expression: ExpressionNode | string): NotOperatorNode => {
+    return new NotOperatorNode(arg(expression));
 };
 
 export const Tk = {
+    Identifier,
     Program,
     FunctionDefinition,
     Call: FunctionCall,
@@ -87,6 +151,13 @@ export const Tk = {
     Number: NumberLiteral,
     Plus,
     If,
+    While,
     True: TrueLiteral,
     False: FalseLiteral,
+    Var,
+    Equal,
+    And,
+    Or,
+    Not,
+    Assign,
 };
