@@ -1,6 +1,6 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer } from "../logger";
-import { EvaluationUnit, ExecutionUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import { UndefinedValue } from "../value";
 
 export class BaseNode {
@@ -15,7 +15,7 @@ export class StatementNode extends BaseNode {
         this.nodes = nodes;
     }
 
-    *execute(context: EvaluationContext): EvaluationUnit {
+    *execute(context: EvaluationContext): ExecuteUnit {
         return new UndefinedValue();
     }
 }
@@ -29,7 +29,7 @@ export abstract class ExpressionNode extends BaseNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new UndefinedValue();
     }
 }

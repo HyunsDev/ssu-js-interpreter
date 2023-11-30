@@ -1,6 +1,6 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer, tracer } from "../logger";
-import { EvaluationUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import { FunctionValue, JavascriptValue } from "../value";
 import { ExpressionNode } from "./BaseNode";
 
@@ -12,7 +12,7 @@ export class IdentifierNode extends ExpressionNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return context.executionContext.getValue(this.identifier);
     }
 }
@@ -26,7 +26,7 @@ export class ReturnNode extends ExpressionNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const value = yield* this.expression.evaluate(context.getSubContext());
         context.isFinished = true;
         context.value = value;
@@ -45,7 +45,7 @@ export class FunctionCallNode extends ExpressionNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const func = context.executionContext.getValue(
             this.identifier.identifier
         );

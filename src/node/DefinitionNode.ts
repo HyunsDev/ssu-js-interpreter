@@ -1,6 +1,6 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer } from "../logger";
-import { EvaluationUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import { FunctionValue, JavascriptValue } from "../value";
 import { ExpressionNode, StatementNode } from "./BaseNode";
 import { IdentifierNode } from "./ExpressionNode";
@@ -24,7 +24,7 @@ export class VariableDefinitionNode extends DefinitionNode {
     }
 
     @NodeTracer()
-    *evaluate(ctx: EvaluationContext): EvaluationUnit {
+    *evaluate(ctx: EvaluationContext): ExecuteUnit {
         const value = yield* this.expression.evaluate(ctx.getSubContext());
         ctx.executionContext.environment.environmentRecord[
             this.identifier.identifier
@@ -50,7 +50,7 @@ export class JavascriptDefinitionNode extends DefinitionNode {
     }
 
     // @EvaluateTracer()
-    *evaluate(ctx: EvaluationContext): EvaluationUnit {
+    *evaluate(ctx: EvaluationContext): ExecuteUnit {
         const value = new JavascriptValue(this.identifier.identifier, this);
         ctx.executionContext.environment.environmentRecord[
             this.identifier.identifier
@@ -75,7 +75,7 @@ export class FunctionDefinitionNode extends DefinitionNode {
         this.body = body;
     }
 
-    *evaluate(ctx: EvaluationContext): EvaluationUnit {
+    *evaluate(ctx: EvaluationContext): ExecuteUnit {
         const value = new FunctionValue(this.identifier.identifier, this);
         ctx.executionContext.environment.environmentRecord[
             this.identifier.identifier

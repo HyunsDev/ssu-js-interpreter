@@ -10,7 +10,7 @@ import {
     ReturnNode,
     StatementNode,
 } from "../node";
-import { EvaluationUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import {
     BooleanValue,
     FunctionValue,
@@ -35,7 +35,7 @@ export class ExecutionContext {
     private evaluationContext: EvaluationContext;
 
     environment: Environment;
-    evaluationUnit: EvaluationUnit;
+    evaluationUnit: ExecuteUnit;
 
     constructor(
         func: FunctionValue,
@@ -83,7 +83,7 @@ export class ExecutionContext {
         return res;
     }
 
-    public *execute(nodes = this.func.definition.body.nodes): EvaluationUnit {
+    public *execute(nodes = this.func.definition.body.nodes): ExecuteUnit {
         yield undefined;
 
         let current = 0;
@@ -115,7 +115,7 @@ export class ExecutionContext {
         identifier: IdentifierNode,
         func: FunctionValue | JavascriptValue,
         args: Value[]
-    ): EvaluationUnit {
+    ): ExecuteUnit {
         yield undefined;
 
         if (func instanceof JavascriptValue) {

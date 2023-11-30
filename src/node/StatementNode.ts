@@ -1,6 +1,6 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer } from "../logger";
-import { EvaluationUnit, ExecutionUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import { BooleanValue, UndefinedValue } from "../value";
 import { BaseNode, ExpressionNode, StatementNode } from "./BaseNode";
 
@@ -27,7 +27,7 @@ export class IfStatementNode extends StatementNode {
     }
 
     @NodeTracer()
-    *execute(context: EvaluationContext): EvaluationUnit {
+    *execute(context: EvaluationContext): ExecuteUnit {
         const condition = yield* this.condition.evaluate(
             context.getSubContext()
         );
@@ -52,7 +52,7 @@ export class WhileStatementNode extends StatementNode {
     }
 
     @NodeTracer()
-    *execute(context: EvaluationContext): EvaluationUnit {
+    *execute(context: EvaluationContext): ExecuteUnit {
         while (true) {
             let condition = yield* this.condition.evaluate(
                 context.getSubContext()

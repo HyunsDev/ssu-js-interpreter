@@ -1,6 +1,6 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer } from "../logger";
-import { EvaluationUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import { BooleanValue, NumberValue } from "../value";
 import { ExpressionNode } from "./BaseNode";
 import { IdentifierNode } from "./ExpressionNode";
@@ -20,7 +20,7 @@ export class AssignmentOperatorNode extends OperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const right = yield* this.right.evaluate(context.getSubContext());
 
         if (!(this.left instanceof IdentifierNode)) {
@@ -50,7 +50,7 @@ export class EqualityOperatorNode extends ComparisonOperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const left = yield* this.left.evaluate(context.getSubContext());
         const right = yield* this.right.evaluate(context.getSubContext());
 
@@ -78,7 +78,7 @@ export class AndOperatorNode extends LogicalOperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const left = yield* this.left.evaluate(context.getSubContext());
         const right = yield* this.right.evaluate(context.getSubContext());
 
@@ -109,7 +109,7 @@ export class OrOperatorNode extends LogicalOperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const left = yield* this.left.evaluate(context.getSubContext());
         const right = yield* this.right.evaluate(context.getSubContext());
 
@@ -138,7 +138,7 @@ export class NotOperatorNode extends LogicalOperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const expression = yield* this.expression.evaluate(
             context.getSubContext()
         );
@@ -167,7 +167,7 @@ export class PlusOperatorNode extends ArithmeticOperatorNode {
     }
 
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         const left = yield* this.left.evaluate(context.getSubContext());
         const right = yield* this.right.evaluate(context.getSubContext());
 

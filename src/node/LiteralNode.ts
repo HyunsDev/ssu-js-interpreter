@@ -1,7 +1,7 @@
 import { EvaluationContext } from "../context/EvaluationContext";
 import { NodeTracer } from "../logger";
 import { ExpressionNode } from "../node";
-import { EvaluationUnit } from "../types";
+import { ExecuteUnit } from "../types";
 import {
     BooleanValue,
     NullValue,
@@ -26,7 +26,7 @@ export class StringLiteralNode extends LiteralNode {
         super(value);
     }
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new StringValue(this.value);
     }
 }
@@ -38,7 +38,7 @@ export class NumberLiteralNode extends LiteralNode {
         super(value);
     }
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new NumberValue(this.value);
     }
 }
@@ -50,7 +50,7 @@ export class BooleanLiteralNode extends LiteralNode {
         super(value);
     }
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new BooleanValue(this.value);
     }
 }
@@ -62,7 +62,7 @@ export class NullLiteralNode extends LiteralNode {
         super(value);
     }
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new NullValue();
     }
 }
@@ -74,7 +74,7 @@ export class UndefinedLiteralNode extends LiteralNode {
         super(value);
     }
     @NodeTracer()
-    *evaluate(context: EvaluationContext): EvaluationUnit {
+    *evaluate(context: EvaluationContext): ExecuteUnit {
         return new UndefinedValue();
     }
 }
