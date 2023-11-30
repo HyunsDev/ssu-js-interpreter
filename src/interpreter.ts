@@ -1,5 +1,10 @@
-import { ExecutionContext, GlobalExecutionContext } from "./executionContext";
+import {
+    ExecutionContext,
+    GlobalExecutionContext,
+} from "./context/ExecutionContext";
+import { tracer } from "./logger";
 import { ProgramNode } from "./node";
+import { Value } from "./value";
 
 class ICallStack {
     interpreter: Interpreter;
@@ -9,24 +14,28 @@ class ICallStack {
         this.interpreter = interpreter;
     }
 
-    run() {
+    run(value?: Value) {
         const context = this.peek();
-        if (context.isDone()) {
+        const res = context.run(value);
+        if (res.done) {
             this.pop();
-            return context;
-        } else {
-            context.run();
+            return res.value;
         }
     }
 
     push(context: ExecutionContext): void {
         this.stack.push(context);
+        tracer.pushCallStack(context.func.identifier);
     }
     peek() {
-        return this.stack[this.stack.length - 1];
+        const context = this.stack[this.stack.length - 1];
+        return context;
     }
     pop() {
-        return this.stack.pop();
+        const context = this.stack.pop();
+        if (!context) return;
+        tracer.popCallStack();
+        return context;
     }
     isEmpty(): boolean {
         return this.stack.length === 0;
@@ -59,20 +68,19 @@ class IEventLoop {
         this.interpreter = interpreter;
     }
 
-    load(context: GlobalExecutionContext): void {
+    load(context: ExecutionContext): void {
         this.interpreter.callStack.push(context);
     }
 
     run(): void {
+        let tempValue: Value | undefined = undefined;
         while (true) {
             if (this.interpreter.callStack.isEmpty()) {
                 if (this.interpreter.messageQueue.isEmpty()) {
                     break;
                 }
             } else {
-                const ctx = this.interpreter.callStack.run();
-
-                console.log(ctx);
+                tempValue = this.interpreter.callStack.run(tempValue);
             }
         }
     }
@@ -95,7 +103,6 @@ export class Interpreter {
             this
         );
         this.eventLoop.load(globalExecutionContext);
-
         this.eventLoop.run();
     }
 }

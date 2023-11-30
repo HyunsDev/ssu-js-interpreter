@@ -1,15 +1,12 @@
-let loop = 0;
-function* add(numbers: number[]): any {
-    console.log(loop++, numbers);
-
-    if (numbers.length === 2) {
-        return numbers[0] + numbers[1];
-    }
-
-    const [first, ...rest] = numbers;
-    const res = yield* add(rest);
-    return first + res;
+function* a() {
+    yield 1;
+    return 2;
 }
 
-const res = add([1, 2, 3, 4, 5]);
-console.log(res.next());
+function* b() {
+    yield 4;
+    yield yield* a();
+    yield 6;
+}
+
+console.log(...b());

@@ -8,6 +8,7 @@
         "start": "ts-node src/index.ts"
     },
     "dependencies": {
+        "chalk": "^4.1.2",
         "typescript": "^5.3.2"
     },
     "devDependencies": {

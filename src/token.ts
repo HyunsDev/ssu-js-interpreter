@@ -1,15 +1,20 @@
+import { TrueLiteral } from "typescript";
 import {
     BaseNode,
+    BooleanLiteralNode,
     ExpressionNode,
     FunctionCallNode,
     FunctionDefinitionNode,
     IdentifierNode,
+    IfStatementNode,
     NumberLiteralNode,
     PlusOperatorNode,
     ProgramNode,
+    ReturnNode,
     StatementNode,
     StringLiteralNode,
 } from "./node";
+import { TrueValue } from "./value";
 
 const Program = (nodes: (StatementNode | ExpressionNode)[]): ProgramNode => {
     return new ProgramNode(new StatementNode(nodes));
@@ -35,7 +40,7 @@ const FunctionCall = (
 };
 
 const Return = (expression: ExpressionNode): ExpressionNode => {
-    return expression;
+    return new ReturnNode(expression);
 };
 
 const StringLiteral = (value: string): StringLiteralNode => {
@@ -44,6 +49,14 @@ const StringLiteral = (value: string): StringLiteralNode => {
 
 const NumberLiteral = (value: number): NumberLiteralNode => {
     return new NumberLiteralNode(value);
+};
+
+const TrueLiteral = (): BooleanLiteralNode => {
+    return new BooleanLiteralNode(true);
+};
+
+const FalseLiteral = (): BooleanLiteralNode => {
+    return new BooleanLiteralNode(false);
 };
 
 const Plus = (
@@ -57,12 +70,23 @@ const Plus = (
     return new PlusOperatorNode(leftNode, rightNode);
 };
 
+const If = (
+    condition: ExpressionNode,
+    then: BaseNode[],
+    otherwise?: BaseNode[]
+): IfStatementNode => {
+    return new IfStatementNode(condition, then, otherwise);
+};
+
 export const Tk = {
     Program,
     FunctionDefinition,
-    FunctionCall,
+    Call: FunctionCall,
     Return,
     String: StringLiteral,
     Number: NumberLiteral,
     Plus,
+    If,
+    True: TrueLiteral,
+    False: FalseLiteral,
 };
