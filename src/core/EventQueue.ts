@@ -1,7 +1,7 @@
 import { ExecutionContext } from "../context/ExecutionContext";
 import { Interpreter } from "./Interpreter";
 
-export class MessageQueue {
+export class EventQueue {
     interpreter: Interpreter;
     queue: ExecutionContext[] = [];
 

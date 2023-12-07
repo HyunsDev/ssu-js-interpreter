@@ -2,16 +2,16 @@ import { GlobalExecutionContext } from "../context/ExecutionContext";
 import { ProgramNode } from "../node";
 import { CallStack } from "./CallStack";
 import { EventLoop } from "./EventLoop";
-import { MessageQueue } from "./MessageQueue";
+import { EventQueue } from "./EventQueue";
 
 export class Interpreter {
     callStack: CallStack;
-    messageQueue: MessageQueue;
+    eventQueue: EventQueue;
     eventLoop: EventLoop;
 
     constructor() {
         this.callStack = new CallStack(this);
-        this.messageQueue = new MessageQueue(this);
+        this.eventQueue = new EventQueue(this);
         this.eventLoop = new EventLoop(this);
     }
 

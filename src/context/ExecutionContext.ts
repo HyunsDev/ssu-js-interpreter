@@ -68,7 +68,7 @@ export class ExecutionContext {
     public run(value?: Value) {
         if (this.func instanceof JavascriptValue) {
             this.done = true;
-            const res = this.func.definition.func(...this.args);
+            const res = this.func.definition.func(this, ...this.args);
             return res;
         }
 
@@ -115,7 +115,7 @@ export class ExecutionContext {
         yield undefined;
 
         if (func instanceof JavascriptValue) {
-            const res = func.definition.func(...args);
+            const res = func.definition.func(this, ...args);
             return res;
         }
 

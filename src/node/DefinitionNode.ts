@@ -1,4 +1,5 @@
 import { EvaluationContext } from "../context/EvaluationContext";
+import { ExecutionContext } from "../context/ExecutionContext";
 import { NodeTracer } from "../logger";
 import { ExecuteUnit } from "../types";
 import { FunctionValue, JavascriptValue } from "../value";
@@ -36,12 +37,12 @@ export class VariableDefinitionNode extends DefinitionNode {
 export class JavascriptDefinitionNode extends DefinitionNode {
     identifier: IdentifierNode;
     parameters: IdentifierNode[];
-    func: (...args: any) => any;
+    func: (ctx: ExecutionContext, ...args: any) => any;
 
     constructor(
         identifier: IdentifierNode,
         parameters: IdentifierNode[],
-        func: (...args: any) => any
+        func: (ctx: ExecutionContext, ...args: any) => any
     ) {
         super();
         this.identifier = identifier;

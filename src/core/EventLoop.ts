@@ -17,7 +17,7 @@ export class EventLoop {
         let tempValue: Value | undefined = undefined;
         while (true) {
             if (this.interpreter.callStack.isEmpty()) {
-                if (this.interpreter.messageQueue.isEmpty()) {
+                if (this.interpreter.eventQueue.isEmpty()) {
                     break;
                 }
             } else {
