@@ -1,18 +1,14 @@
 import { BuildInNodes } from "../builtIn";
-import { Interpreter } from "../interpreter";
+import { Interpreter } from "../core/Interpreter";
 import {
     ExpressionNode,
-    FunctionDefinitionNode,
     IdentifierNode,
-    IfStatementNode,
-    JavascriptDefinitionNode,
     ProgramNode,
     ReturnNode,
     StatementNode,
 } from "../node";
 import { ExecuteUnit } from "../types";
 import {
-    BooleanValue,
     FunctionValue,
     JavascriptValue,
     UndefinedValue,

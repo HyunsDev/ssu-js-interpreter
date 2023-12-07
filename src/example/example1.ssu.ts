@@ -2,7 +2,7 @@ import { Tk } from "../token";
 
 export const program = Tk.Program([
     Tk.FunctionDefinition("a", [], [Tk.Return(Tk.String("hello, world!"))]),
-    Tk.FunctionCall("print", [Tk.FunctionCall("a", [])]),
+    Tk.Call("print", [Tk.Call("a", [])]),
 ]);
 
 // function a() {
