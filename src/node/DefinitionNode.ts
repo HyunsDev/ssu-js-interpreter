@@ -76,6 +76,7 @@ export class FunctionDefinitionNode extends DefinitionNode {
         this.body = body;
     }
 
+    @NodeTracer()
     *evaluate(ctx: EvaluationContext): ExecuteUnit {
         const value = new FunctionValue(this.identifier.identifier, this);
         ctx.executionContext.environment.environmentRecord[

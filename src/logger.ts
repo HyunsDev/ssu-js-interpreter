@@ -1,7 +1,8 @@
 import chalk from "chalk";
 import { FunctionCallNode } from "./node";
+import { Interpreter } from "./core/Interpreter";
 
-const SHOW_NODE = true;
+const SHOW_NODE = false;
 
 export const logger = {
     output: (from: string, value: any) => {
@@ -18,6 +19,7 @@ export const logger = {
 };
 
 export class Tracer {
+    private interpreter!: Interpreter;
     private stack: {
         name: string;
         deps: number;
@@ -25,6 +27,10 @@ export class Tracer {
 
     constructor() {
         this.stack = [];
+    }
+
+    setInterpreter(interpreter: Interpreter): void {
+        this.interpreter = interpreter;
     }
 
     pushCallStack(name: string): void {
@@ -44,6 +50,19 @@ export class Tracer {
                 ` < ${stack?.name} `
             )}`
         );
+
+        if (this.stack.length === 0) {
+            if (
+                !this.interpreter.eventQueue.isEmpty() ||
+                !this.interpreter.pendingList.isEmpty()
+            ) {
+                console.log(
+                    `${chalk.gray(
+                        `eventQueue: ${this.interpreter.eventQueue.queue.length}, pendingList: ${this.interpreter.pendingList.pendingList.length}`
+                    )}\n`
+                );
+            }
+        }
     }
 
     pushNode(name: string, deps: number, message = ""): void {

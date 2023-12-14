@@ -1,4 +1,4 @@
-import { Tk } from "../token";
+import { Tk } from "../src/token";
 
 export const program = Tk.Program([
     Tk.FunctionDefinition("add", ["a", "b"], [Tk.Return(Tk.Plus("a", "b"))]),

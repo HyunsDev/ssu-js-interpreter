@@ -14,15 +14,34 @@ export class EventLoop {
     }
 
     run(): void {
+        let isFinished = false;
         let tempValue: Value | undefined = undefined;
         while (true) {
-            if (this.interpreter.callStack.isEmpty()) {
-                if (this.interpreter.eventQueue.isEmpty()) {
-                    break;
-                }
-            } else {
+            isFinished = true;
+            if (!this.interpreter.callStack.isEmpty()) {
                 tempValue = this.interpreter.callStack.run(tempValue);
+                isFinished = false;
             }
+
+            if (!this.interpreter.pendingList.isEmpty()) {
+                const pendingList = this.interpreter.pendingList.run();
+                for (const pendingItem of pendingList) {
+                    this.interpreter.callStack.push(
+                        pendingItem.executionContext
+                    );
+                }
+                isFinished = false;
+            }
+
+            if (!this.interpreter.eventQueue.isEmpty()) {
+                const context = this.interpreter.eventQueue.dequeue();
+                if (context) {
+                    this.interpreter.callStack.push(context);
+                }
+                isFinished = false;
+            }
+
+            if (isFinished) break;
         }
     }
 }

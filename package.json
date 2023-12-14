@@ -5,7 +5,7 @@
     "repository": "https://github.com/HyunsDev/ssu-promise.git",
     "author": "혀느현스 <hyuns@hyuns.dev>",
     "scripts": {
-        "start": "ts-node src/index.ts"
+        "start": "ts-node index.ts"
     },
     "dependencies": {
         "chalk": "^4.1.2",
